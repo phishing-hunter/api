@@ -2,7 +2,7 @@
 
 * https://doc.phishing-hunter.com
 
-## python
+## Python
 ```bash
 $ pip uninstall phishing-hunter
 ```
@@ -10,4 +10,16 @@ $ pip uninstall phishing-hunter
 ## Nodejs
 ```bash
 $ npm i phishing_hunter_api
+```
+
+## Golang
+```bash
+go get github.com/stretchr/testify/assert
+go get golang.org/x/net/context
+```
+
+Put the package under your project folder and add the following in import:
+
+```golang
+import phishing_hunter "github.com/phishing-hunter/api/go"
 ```

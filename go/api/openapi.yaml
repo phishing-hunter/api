@@ -1,0 +1,937 @@
+openapi: 3.0.0
+info:
+  title: Phishing Hunter API
+  version: "1.0"
+servers:
+- url: https://api.phishing-hunter.com/v1
+security:
+- custom_authorizer: []
+paths:
+  /scanner:
+    get:
+      operationId: get-scanner
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    domains:
+                    - www.google.com
+              schema:
+                $ref: '#/components/schemas/get_scanner_200_response'
+          description: OK
+        "500":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    message: error message here.
+              schema:
+                $ref: '#/components/schemas/get_scanner_500_response'
+          description: サーバ側のエラー
+      summary: スキャン対象のドメイン一覧の取得
+      tags:
+      - scanner
+  /scanner/add:
+    post:
+      operationId: post-scanner-add
+      requestBody:
+        content:
+          application/json:
+            examples:
+              example:
+                value:
+                  domain: www.google.com
+            schema:
+              $ref: '#/components/schemas/post_scanner_add_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    result: true
+              schema:
+                $ref: '#/components/schemas/post_scanner_add_200_response'
+          description: 正常終了の場合はtrue、異常がある場合はfalseを返す。
+        "500":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    message: error message here.
+              schema:
+                $ref: '#/components/schemas/get_scanner_500_response'
+          description: サーバ側のエラー
+      summary: スキャン対象のドメインの追加
+      tags:
+      - scanner
+  /scanner/remove:
+    post:
+      operationId: post-scanner-remove
+      requestBody:
+        content:
+          application/json:
+            examples:
+              example:
+                value:
+                  keywords:
+                  - paypal
+                  - icloud
+                  - gmail
+                  target_score: 100
+                  webhook_url: https://xxxx
+            schema:
+              $ref: '#/components/schemas/post_scanner_add_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    result: true
+              schema:
+                $ref: '#/components/schemas/post_scanner_add_200_response'
+          description: 正常終了の場合はtrue、異常がある場合はfalseを返す。
+        "500":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    message: error message here.
+              schema:
+                $ref: '#/components/schemas/get_scanner_500_response'
+          description: サーバ側のエラー
+      summary: スキャン対象のドメイン一覧の削除
+      tags:
+      - scanner
+  /hunting:
+    get:
+      operationId: get-hunting
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    keywords:
+                      domain:
+                      - paypal
+                      - icloud
+                      - gmail
+                      dom:
+                      - pay
+                    target_score: 100
+              schema:
+                $ref: '#/components/schemas/get_hunting_200_response'
+          description: OK
+        "500":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    message: error message here.
+              schema:
+                $ref: '#/components/schemas/get_scanner_500_response'
+          description: サーバ側のエラー
+      summary: ハンティング設定の取得
+      tags:
+      - hunting
+    post:
+      operationId: post-hunting
+      requestBody:
+        content:
+          application/json:
+            examples:
+              example:
+                value:
+                  keywords:
+                    domain:
+                    - paypal
+                    - icloud
+                    - gmail
+                    dom:
+                    - pay
+                  target_score: 100
+            schema:
+              $ref: '#/components/schemas/get_hunting_200_response'
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    result: true
+              schema:
+                $ref: '#/components/schemas/post_scanner_add_200_response'
+          description: 正常終了の場合はtrue、異常がある場合はfalseを返す。
+        "500":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    message: error message here.
+              schema:
+                $ref: '#/components/schemas/get_scanner_500_response'
+          description: サーバ側のエラー
+      summary: ハンティング設定の更新
+      tags:
+      - hunting
+  /observation:
+    get:
+      operationId: get-observations
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    observation_urls:
+                      http://example-hoge.com:
+                        period: 1
+                        rule_name: obs_job_555906eaebef4f7fa2db61530b5bd9b7
+                        expire: 1671580800
+                        api_config:
+                          urlscan:
+                            visibility: unlisted
+                        created_at: 1671010527
+                        comment: test comment
+                        interval: hour
+              schema:
+                $ref: '#/components/schemas/get_observations_200_response'
+          description: OK
+        "500":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    message: error message here.
+              schema:
+                $ref: '#/components/schemas/get_scanner_500_response'
+          description: サーバ側のエラー
+      summary: 監視対象ドメイン一覧の取得
+      tags:
+      - observation
+  /observation/add:
+    post:
+      operationId: post-observation-add
+      requestBody:
+        content:
+          application/json:
+            examples:
+              example:
+                value:
+                  url: http://example-hoge.com
+                  interval: hour
+                  period: 1
+                  comment: ""
+                  expire: 1671580800
+                  api_config:
+                    urlscan:
+                      visibility: unlisted
+            schema:
+              $ref: '#/components/schemas/post_observation_add_request'
+        description: ""
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    message: string
+              schema:
+                $ref: '#/components/schemas/get_scanner_500_response'
+          description: メッセージ付きの応答
+        "500":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    message: error message here.
+              schema:
+                $ref: '#/components/schemas/get_scanner_500_response'
+          description: サーバ側のエラー
+      summary: 監視対象ドメインの追加
+      tags:
+      - observation
+  /observation/remove:
+    post:
+      description: ""
+      operationId: post-observation-remove
+      requestBody:
+        content:
+          application/json:
+            examples:
+              example:
+                value:
+                  url: http://example-hoge.com
+            schema:
+              $ref: '#/components/schemas/post_observation_remove_request'
+        description: ""
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    message: string
+              schema:
+                $ref: '#/components/schemas/get_scanner_500_response'
+          description: メッセージ付きの応答
+        "500":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    message: error message here.
+              schema:
+                $ref: '#/components/schemas/get_scanner_500_response'
+          description: サーバ側のエラー
+      summary: 監視対象ドメインの削除
+      tags:
+      - observation
+  /notify:
+    get:
+      operationId: get-notify-slack
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    hunting:
+                      type: email
+                      webhook_url: ""
+                    observation:
+                      type: email
+                      webhook_url: ""
+              schema:
+                $ref: '#/components/schemas/get_notify_slack_200_response'
+          description: OK
+        "500":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    message: error message here.
+              schema:
+                $ref: '#/components/schemas/get_scanner_500_response'
+          description: サーバ側のエラー
+      summary: 通知設定の一覧を取得
+      tags:
+      - settings
+    post:
+      operationId: post-notify-slack
+      requestBody:
+        content:
+          application/json:
+            examples:
+              example-email:
+                value:
+                  type: email
+                  webhook_url: ""
+                  service: hunting
+              example-webhook:
+                value:
+                  type: webhook
+                  webhook_url: https://example.com/webhook
+                  service: observation
+            schema:
+              $ref: '#/components/schemas/post_notify_slack_request'
+        description: ""
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    result: true
+              schema:
+                $ref: '#/components/schemas/post_scanner_add_200_response'
+          description: 正常終了の場合はtrue、異常がある場合はfalseを返す。
+        "500":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    message: error message here.
+              schema:
+                $ref: '#/components/schemas/get_scanner_500_response'
+          description: サーバ側のエラー
+      summary: 通知設定の更新
+      tags:
+      - settings
+  /apikeys:
+    get:
+      operationId: get-apikeys
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    api_keys:
+                      urlscan: ""
+                      shodan: ""
+                      vt: ""
+              schema:
+                $ref: '#/components/schemas/get_apikeys_200_response'
+          description: OK
+        "500":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    message: error message here.
+              schema:
+                $ref: '#/components/schemas/get_scanner_500_response'
+          description: サーバ側のエラー
+      summary: 外部サービス設定の取得
+      tags:
+      - settings
+    post:
+      description: ""
+      operationId: post-apikeys
+      requestBody:
+        content:
+          application/json:
+            examples:
+              example:
+                value:
+                  api_keys:
+                    urlscan: ""
+                    shodan: ""
+                    vt: ""
+            schema:
+              $ref: '#/components/schemas/get_apikeys_200_response'
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    result: true
+              schema:
+                $ref: '#/components/schemas/post_scanner_add_200_response'
+          description: 正常終了の場合はtrue、異常がある場合はfalseを返す。
+        "500":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    message: error message here.
+              schema:
+                $ref: '#/components/schemas/get_scanner_500_response'
+          description: サーバ側のエラー
+      summary: 外部サービス設定の更新
+      tags:
+      - settings
+  /users/info:
+    get:
+      description: ユーザを識別するための情報とAPI利用状況を返す
+      operationId: get-users-info
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    quota:
+                      domain_keywords: 10
+                      observations: 5
+                      scanner: 3
+                    user_plan: free
+              schema:
+                $ref: '#/components/schemas/get_users_info_200_response'
+          description: OK
+        "500":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    message: error message here.
+              schema:
+                $ref: '#/components/schemas/get_scanner_500_response'
+          description: サーバ側のエラー
+      summary: ユーザ情報の取得
+      tags:
+      - user
+  /apikey:
+    get:
+      operationId: get-apikey
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    api_keys: {}
+              schema:
+                $ref: '#/components/schemas/get_apikey_200_response'
+          description: OK
+        "500":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    message: error message here.
+              schema:
+                $ref: '#/components/schemas/get_scanner_500_response'
+          description: サーバ側のエラー
+      summary: APIキーの一覧を取得
+      tags:
+      - user
+  /apikey/create:
+    post:
+      operationId: post-apikey-create
+      requestBody:
+        content:
+          application/json:
+            examples:
+              example:
+                value:
+                  description: test api key
+                  ip:
+                  - 127.0.0.1
+                  - 192.168.0.1/24
+                  scope:
+                  - get:hunting
+                  - get:users_info
+            schema:
+              $ref: '#/components/schemas/post_apikey_create_request'
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                example-1:
+                  value:
+                    api_key: pk_xxxxxxxxxxxxxxxxxxxxxxx
+              schema:
+                $ref: '#/components/schemas/post_apikey_create_200_response'
+          description: OK
+        "500":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    message: error message here.
+              schema:
+                $ref: '#/components/schemas/get_scanner_500_response'
+          description: サーバ側のエラー
+      summary: APIキーの作成
+      tags:
+      - user
+  /apikey/delete:
+    post:
+      operationId: post-apikey-delete
+      requestBody:
+        content:
+          application/json:
+            examples:
+              example:
+                value:
+                  api_key: string
+            schema:
+              $ref: '#/components/schemas/post_apikey_create_200_response'
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    message: api key deleted
+              schema:
+                $ref: '#/components/schemas/post_apikey_delete_200_response'
+          description: OK
+        "500":
+          content:
+            application/json:
+              examples:
+                example:
+                  value:
+                    message: error message here.
+              schema:
+                $ref: '#/components/schemas/get_scanner_500_response'
+          description: サーバ側のエラー
+      summary: APIキーの削除
+      tags:
+      - user
+components:
+  responses:
+    result:
+      content:
+        application/json:
+          examples:
+            example:
+              value:
+                result: true
+          schema:
+            $ref: '#/components/schemas/post_scanner_add_200_response'
+      description: 正常終了の場合はtrue、異常がある場合はfalseを返す。
+    error:
+      content:
+        application/json:
+          examples:
+            example:
+              value:
+                message: error message here.
+          schema:
+            $ref: '#/components/schemas/get_scanner_500_response'
+      description: サーバ側のエラー
+    message:
+      content:
+        application/json:
+          examples:
+            example:
+              value:
+                message: string
+          schema:
+            $ref: '#/components/schemas/get_scanner_500_response'
+      description: メッセージ付きの応答
+  schemas:
+    get_scanner_200_response:
+      example:
+        domains:
+        - domains
+        - domains
+      properties:
+        domains:
+          items:
+            type: string
+          type: array
+      type: object
+      x-examples:
+        example-1:
+          domains:
+          - www.google.com
+    get_scanner_500_response:
+      example:
+        message: message
+      properties:
+        message:
+          type: string
+      type: object
+      x-examples:
+        example-1:
+          message: ""
+    post_scanner_add_request:
+      properties:
+        domain:
+          type: string
+      type: object
+      x-examples:
+        example-1:
+          domain: www.google.com
+    post_scanner_add_200_response:
+      example:
+        result: true
+      properties:
+        result:
+          type: boolean
+      type: object
+    get_hunting_200_response_keywords:
+      example:
+        dom:
+        - dom
+        - dom
+        domain:
+        - domain
+        - domain
+      properties:
+        domain:
+          items:
+            type: string
+          type: array
+        dom:
+          items:
+            type: string
+          type: array
+      type: object
+    get_hunting_200_response:
+      example:
+        keywords:
+          dom:
+          - dom
+          - dom
+          domain:
+          - domain
+          - domain
+        target_score: 0
+      properties:
+        keywords:
+          $ref: '#/components/schemas/get_hunting_200_response_keywords'
+        target_score:
+          type: integer
+      type: object
+      x-examples:
+        example-1:
+          keywords:
+            domain:
+            - paypal
+            - icloud
+            - gmail
+            dom:
+            - pay
+          target_score: 100
+    get_observations_200_response:
+      example:
+        observation_urls: "{}"
+      properties:
+        observation_urls:
+          type: object
+      type: object
+      x-examples:
+        example-1:
+          observation_urls:
+            http://example-hoge.com:
+              period: 1
+              rule_name: obs_job_555906eaebef4f7fa2db61530b5bd9b7
+              expire: 1671580800
+              api_config:
+                urlscan:
+                  visibility: unlisted
+              created_at: 1671010527
+              comment: test comment
+              interval: hour
+    post_observation_add_request_api_config_urlscan:
+      properties:
+        visibility:
+          type: string
+      type: object
+    post_observation_add_request_api_config:
+      properties:
+        urlscan:
+          $ref: '#/components/schemas/post_observation_add_request_api_config_urlscan'
+      type: object
+    post_observation_add_request:
+      properties:
+        url:
+          type: string
+        interval:
+          type: string
+        period:
+          type: integer
+        comment:
+          type: string
+        expire:
+          type: integer
+        api_config:
+          $ref: '#/components/schemas/post_observation_add_request_api_config'
+      type: object
+      x-examples:
+        example-1:
+          url: http://example-hoge.com
+          interval: hour
+          period: 1
+          comment: ""
+          expire: 1671580800
+          api_config:
+            urlscan:
+              visibility: unlisted
+    post_observation_remove_request:
+      properties:
+        url:
+          type: string
+      type: object
+      x-examples:
+        example-1:
+          url: http://www.google.com
+    get_notify_slack_200_response_hunting:
+      example:
+        webhook_url: webhook_url
+        type: type
+      properties:
+        type:
+          type: string
+        webhook_url:
+          type: string
+      type: object
+    get_notify_slack_200_response:
+      example:
+        observation:
+          webhook_url: webhook_url
+          type: type
+        hunting:
+          webhook_url: webhook_url
+          type: type
+      properties:
+        hunting:
+          $ref: '#/components/schemas/get_notify_slack_200_response_hunting'
+        observation:
+          $ref: '#/components/schemas/get_notify_slack_200_response_hunting'
+      type: object
+      x-examples:
+        example-1:
+          hunting:
+            type: email
+            webhook_url: ""
+          observation:
+            type: email
+            webhook_url: ""
+    post_notify_slack_request:
+      properties:
+        type:
+          type: string
+        webhook_url:
+          type: string
+        service:
+          type: string
+      type: object
+      x-examples:
+        example-1:
+          type: email
+          webhook_url: ""
+          service: keyword
+    get_apikeys_200_response_api_keys:
+      example:
+        urlscan: urlscan
+        shodan: shodan
+        vt: vt
+      properties:
+        urlscan:
+          type: string
+        shodan:
+          type: string
+        vt:
+          type: string
+      type: object
+    get_apikeys_200_response:
+      example:
+        api_keys:
+          urlscan: urlscan
+          shodan: shodan
+          vt: vt
+      properties:
+        api_keys:
+          $ref: '#/components/schemas/get_apikeys_200_response_api_keys'
+      type: object
+      x-examples:
+        example-1:
+          api_keys:
+            urlscan: ""
+            shodan: ""
+            vt: ""
+    get_users_info_200_response_quota:
+      example:
+        observations: 6
+        scanner: 1
+        domain_keywords: 0
+      properties:
+        domain_keywords:
+          type: integer
+        observations:
+          type: integer
+        scanner:
+          type: integer
+      type: object
+    get_users_info_200_response:
+      example:
+        quota:
+          observations: 6
+          scanner: 1
+          domain_keywords: 0
+        user_plan: user_plan
+      properties:
+        quota:
+          $ref: '#/components/schemas/get_users_info_200_response_quota'
+        user_plan:
+          type: string
+      type: object
+      x-examples:
+        example-1:
+          quota:
+            domain_keywords: 10
+            observations: 5
+            scanner: 3
+          user_plan: free
+    get_apikey_200_response:
+      example:
+        api_keys: "{}"
+      properties:
+        api_keys:
+          type: object
+      type: object
+      x-examples:
+        example-1:
+          api_keys: {}
+    post_apikey_create_request:
+      properties:
+        description:
+          type: string
+        ip:
+          items:
+            type: string
+          type: array
+        scope:
+          items:
+            type: string
+          type: array
+      type: object
+      x-examples:
+        example-1:
+          description: test api key
+          ip:
+          - 127.0.0.1
+          - 192.168.0.1/24
+          scope:
+          - get:hunting
+          - get:users_info
+    post_apikey_create_200_response:
+      example:
+        api_key: api_key
+      properties:
+        api_key:
+          type: string
+      type: object
+      x-examples:
+        example-1:
+          api_key: ph_lzcjlzixocswpwkcmfceedocglolwesl
+    post_apikey_delete_200_response:
+      example:
+        message: message
+      properties:
+        message:
+          type: string
+      type: object
+      x-examples:
+        example-1:
+          message: api key deleted
+  securitySchemes:
+    custom_authorizer:
+      in: header
+      name: Authorization
+      type: apiKey
+x-stoplight:
+  id: 1wsfcal2mug8s
