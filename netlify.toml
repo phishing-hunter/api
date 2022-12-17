@@ -1,0 +1,6 @@
+# ビルド設定
+[build]
+  # 公開ディレクトリ
+  publish = "public"
+  # デプロイ前実行コマンド
+  command = "yarn build"

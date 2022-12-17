@@ -1,0 +1,770 @@
+openapi: 3.0.0
+x-stoplight:
+  id: 1wsfcal2mug8s
+info:
+  title: Phishing Hunter API
+  version: '1.0'
+servers:
+  - url: 'https://api.phishing-hunter.com/v1'
+paths:
+  /scanner:
+    get:
+      summary: スキャン対象のドメイン一覧の取得
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  domains:
+                    type: array
+                    items:
+                      type: string
+                x-examples:
+                  example-1:
+                    domains:
+                      - www.google.com
+              examples:
+                example:
+                  value:
+                    domains:
+                      - www.google.com
+        '500':
+          $ref: '#/components/responses/error'
+      operationId: get-keywords
+      tags:
+        - scanner
+    parameters: []
+  /scanner/add:
+    post:
+      summary: スキャン対象のドメインの追加
+      operationId: post-keywords
+      responses:
+        '200':
+          $ref: '#/components/responses/result'
+        '500':
+          $ref: '#/components/responses/error'
+        '':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                x-examples:
+                  example-1:
+                    message: www.google.comを削除しました
+              examples:
+                example:
+                  value:
+                    message: www.google.comを削除しました
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                domain:
+                  type: string
+              x-examples:
+                example-1:
+                  domain: www.google.com
+            examples:
+              example:
+                value:
+                  domain: www.google.com
+      tags:
+        - scanner
+    parameters: []
+  /scanner/remove:
+    post:
+      summary: スキャン対象のドメイン一覧の削除
+      operationId: post-keywords
+      responses:
+        '200':
+          $ref: '#/components/responses/result'
+        '500':
+          $ref: '#/components/responses/error'
+        '':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                x-examples:
+                  example-1:
+                    message: www.google.comを削除しました
+              examples:
+                example:
+                  value:
+                    message: www.google.comを削除しました
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                domain:
+                  type: string
+              x-examples:
+                example-1:
+                  domain: www.google.com
+            examples:
+              example:
+                value:
+                  keywords:
+                    - paypal
+                    - icloud
+                    - gmail
+                  target_score: 100
+                  webhook_url: 'https://xxxx'
+      tags:
+        - scanner
+    parameters: []
+  /hunting:
+    get:
+      summary: ハンティング設定の取得
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  keywords:
+                    type: object
+                    properties:
+                      domain:
+                        type: array
+                        items:
+                          type: string
+                      dom:
+                        type: array
+                        items:
+                          type: string
+                  target_score:
+                    type: integer
+                x-examples:
+                  example-1:
+                    keywords:
+                      domain:
+                        - paypal
+                        - icloud
+                        - gmail
+                      dom:
+                        - pay
+                    target_score: 100
+              examples:
+                example:
+                  value:
+                    keywords:
+                      domain:
+                        - paypal
+                        - icloud
+                        - gmail
+                      dom:
+                        - pay
+                    target_score: 100
+        '500':
+          $ref: '#/components/responses/error'
+      operationId: get-keywords
+      tags:
+        - hunting
+    post:
+      summary: ハンティング設定の更新
+      operationId: post-keywords
+      responses:
+        '200':
+          $ref: '#/components/responses/result'
+        '500':
+          $ref: '#/components/responses/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                keywords:
+                  type: object
+                  properties:
+                    domain:
+                      type: array
+                      items:
+                        type: string
+                    dom:
+                      type: array
+                      items:
+                        type: string
+                target_score:
+                  type: integer
+              x-examples:
+                example-1:
+                  keywords:
+                    domain:
+                      - paypal
+                      - icloud
+                      - gmail
+                    dom:
+                      - pay
+                  target_score: 100
+            examples:
+              example:
+                value:
+                  keywords:
+                    domain:
+                      - paypal
+                      - icloud
+                      - gmail
+                    dom:
+                      - pay
+                  target_score: 100
+      tags:
+        - hunting
+    parameters: []
+  /observation:
+    get:
+      summary: 監視対象ドメイン一覧の取得
+      tags:
+        - observation
+      operationId: get-observations
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  example-1:
+                    observation_urls:
+                      'http://example-hoge.com':
+                        period: 1
+                        rule_name: obs_job_555906eaebef4f7fa2db61530b5bd9b7
+                        expire: 1671580800
+                        api_config:
+                          urlscan:
+                            visibility: unlisted
+                        created_at: 1671010527
+                        comment: test comment
+                        interval: hour
+                properties:
+                  observation_urls:
+                    type: object
+              examples:
+                example:
+                  value:
+                    observation_urls:
+                      'http://example-hoge.com':
+                        period: 1
+                        rule_name: obs_job_555906eaebef4f7fa2db61530b5bd9b7
+                        expire: 1671580800
+                        api_config:
+                          urlscan:
+                            visibility: unlisted
+                        created_at: 1671010527
+                        comment: test comment
+                        interval: hour
+        '500':
+          $ref: '#/components/responses/error'
+        '':
+          $ref: '#/components/responses/result'
+    parameters: []
+  /observation/add:
+    parameters: []
+    post:
+      summary: 監視対象ドメインの追加
+      operationId: post-observation-add
+      responses:
+        '200':
+          $ref: '#/components/responses/message'
+        '500':
+          $ref: '#/components/responses/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                interval:
+                  type: string
+                period:
+                  type: integer
+                comment:
+                  type: string
+                expire:
+                  type: integer
+                api_config:
+                  type: object
+                  properties:
+                    urlscan:
+                      type: object
+                      properties:
+                        visibility:
+                          type: string
+              x-examples:
+                example-1:
+                  url: 'http://example-hoge.com'
+                  interval: hour
+                  period: 1
+                  comment: ''
+                  expire: 1671580800
+                  api_config:
+                    urlscan:
+                      visibility: unlisted
+            examples:
+              example:
+                value:
+                  url: 'http://example-hoge.com'
+                  interval: hour
+                  period: 1
+                  comment: ''
+                  expire: 1671580800
+                  api_config:
+                    urlscan:
+                      visibility: unlisted
+        description: ''
+      tags:
+        - observation
+  /observation/remove:
+    parameters: []
+    post:
+      summary: 監視対象ドメインの削除
+      operationId: post-observation-add
+      responses:
+        '200':
+          $ref: '#/components/responses/message'
+        '500':
+          $ref: '#/components/responses/error'
+        '':
+          $ref: '#/components/responses/result'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+              x-examples:
+                example-1:
+                  url: 'http://www.google.com'
+            examples:
+              example:
+                value:
+                  url: 'http://example-hoge.com'
+        description: ''
+      tags:
+        - observation
+      description: ''
+  /notify:
+    get:
+      summary: 通知設定の一覧を取得
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  hunting:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      webhook_url:
+                        type: string
+                  observation:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                      webhook_url:
+                        type: string
+                x-examples:
+                  example-1:
+                    hunting:
+                      type: email
+                      webhook_url: ''
+                    observation:
+                      type: email
+                      webhook_url: ''
+              examples:
+                example:
+                  value:
+                    hunting:
+                      type: email
+                      webhook_url: ''
+                    observation:
+                      type: email
+                      webhook_url: ''
+        '500':
+          $ref: '#/components/responses/error'
+      operationId: get-notify-slack
+      tags:
+        - settings
+    post:
+      summary: 通知設定の更新
+      operationId: post-notify-slack
+      responses:
+        '200':
+          $ref: '#/components/responses/result'
+        '500':
+          $ref: '#/components/responses/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                webhook_url:
+                  type: string
+                service:
+                  type: string
+              x-examples:
+                example-1:
+                  type: email
+                  webhook_url: ''
+                  service: keyword
+            examples:
+              example-email:
+                value:
+                  type: email
+                  webhook_url: ''
+                  service: hunting
+              example-webhook:
+                value:
+                  type: webhook
+                  webhook_url: 'https://example.com/webhook'
+                  service: observation
+        description: ''
+      tags:
+        - settings
+    parameters: []
+  /apikeys:
+    get:
+      summary: 外部サービス設定の取得
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  api_keys:
+                    type: object
+                    properties:
+                      urlscan:
+                        type: string
+                      shodan:
+                        type: string
+                      vt:
+                        type: string
+                x-examples:
+                  example-1:
+                    api_keys:
+                      urlscan: ''
+                      shodan: ''
+                      vt: ''
+              examples:
+                example:
+                  value:
+                    api_keys:
+                      urlscan: ''
+                      shodan: ''
+                      vt: ''
+        '500':
+          $ref: '#/components/responses/error'
+      operationId: get-keywords
+      tags:
+        - settings
+    post:
+      summary: 外部サービス設定の更新
+      operationId: post-keywords
+      responses:
+        '200':
+          $ref: '#/components/responses/result'
+        '500':
+          $ref: '#/components/responses/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                api_keys:
+                  type: object
+                  properties:
+                    urlscan:
+                      type: string
+                    shodan:
+                      type: string
+                    vt:
+                      type: string
+              x-examples:
+                example-1:
+                  api_keys:
+                    urlscan: ''
+                    shodan: ''
+                    vt: ''
+            examples:
+              example:
+                value:
+                  api_keys:
+                    urlscan: ''
+                    shodan: ''
+                    vt: ''
+      tags:
+        - settings
+      description: ''
+    parameters: []
+  /users/info:
+    get:
+      summary: ユーザ情報の取得
+      tags:
+        - user
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quota:
+                    type: object
+                    properties:
+                      domain_keywords:
+                        type: integer
+                      observations:
+                        type: integer
+                      scanner:
+                        type: integer
+                  user_plan:
+                    type: string
+                x-examples:
+                  example-1:
+                    quota:
+                      domain_keywords: 10
+                      observations: 5
+                      scanner: 3
+                    user_plan: free
+              examples:
+                example:
+                  value:
+                    quota:
+                      domain_keywords: 10
+                      observations: 5
+                      scanner: 3
+                    user_plan: free
+        '500':
+          $ref: '#/components/responses/error'
+      operationId: get-users-info
+      description: ユーザを識別するための情報とAPI利用状況を返す
+  /apikey:
+    get:
+      summary: APIキーの一覧を取得
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  example-1:
+                    api_keys: {}
+                properties:
+                  api_keys:
+                    type: object
+              examples:
+                example:
+                  value:
+                    api_keys: {}
+        '500':
+          $ref: '#/components/responses/error'
+      operationId: get-apikey
+      tags:
+        - user
+  /apikey/create:
+    post:
+      summary: APIキーの作成
+      operationId: post-apikey-create
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  api_key:
+                    type: string
+                x-examples:
+                  example-1:
+                    api_key: ph_lzcjlzixocswpwkcmfceedocglolwesl
+              examples:
+                example-1:
+                  value:
+                    api_key: pk_xxxxxxxxxxxxxxxxxxxxxxx
+        '500':
+          $ref: '#/components/responses/error'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                ip:
+                  type: array
+                  items:
+                    type: string
+                scope:
+                  type: array
+                  items:
+                    type: string
+              x-examples:
+                example-1:
+                  description: test api key
+                  ip:
+                    - 127.0.0.1
+                    - 192.168.0.1/24
+                  scope:
+                    - 'get:hunting'
+                    - 'get:users_info'
+            examples:
+              example:
+                value:
+                  description: test api key
+                  ip:
+                    - 127.0.0.1
+                    - 192.168.0.1/24
+                  scope:
+                    - 'get:hunting'
+                    - 'get:users_info'
+      tags:
+        - user
+  /apikey/delete:
+    post:
+      summary: APIキーの削除
+      operationId: post-apikey-create
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  api_key:
+                    type: string
+                x-examples:
+                  example-1:
+                    api_key: ph_lzcjlzixocswpwkcmfceedocglolwesl
+              examples:
+                example-1:
+                  value:
+                    api_key: pk_xxxxxxxxxxxxxxxxxxxxxxx
+        '500':
+          $ref: '#/components/responses/error'
+        '':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                x-examples:
+                  example-1:
+                    message: api key deleted
+              examples:
+                example:
+                  value:
+                    message: api key deleted
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                api_key:
+                  type: string
+              x-examples:
+                example-1:
+                  api_key: ph_lzcjlzixocswpwkcmfceedocglolwesl
+            examples:
+              example:
+                value:
+                  api_key: string
+      tags:
+        - user
+    parameters: []
+components:
+  schemas: {}
+  responses:
+    result:
+      description: 正常終了の場合はtrue、異常がある場合はfalseを返す。
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              result:
+                type: boolean
+          examples:
+            example:
+              value:
+                result: true
+    error:
+      description: サーバ側のエラー
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+            x-examples:
+              example-1:
+                message: ''
+          examples:
+            example:
+              value:
+                message: error message here.
+    message:
+      description: メッセージ付きの応答
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+            x-examples:
+              example-1:
+                message: ''
+          examples:
+            example:
+              value:
+                message: string
+  securitySchemes:
+    custom_authorizer:
+      name: Authorization
+      type: apiKey
+      in: header
+security:
+  - custom_authorizer: []

@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "build": "redoc-cli bundle openapi.yaml -o public/index.html",
+    "netlify": "netlify",
+    "netlify:deploy": "netlify deploy --build --prod --open"
+  },
+  "devDependencies": {
+    "@stoplight/prism-cli": "^4.10.4",
+    "netlify-cli": "^11.8.2",
+    "redoc-cli": "^0.13.20"
+  }
+}
