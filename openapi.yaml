@@ -33,20 +33,17 @@ paths:
                       - www.google.com
         '500':
           $ref: '#/components/responses/error'
-      operationId: get-keywords
+      operationId: get-scanner
       tags:
         - scanner
     parameters: []
   /scanner/add:
     post:
       summary: スキャン対象のドメインの追加
-      operationId: post-keywords
+      operationId: post-scanner-add
       responses:
         '200':
           $ref: '#/components/responses/result'
-        '500':
-          $ref: '#/components/responses/error'
-        '':
           content:
             application/json:
               schema:
@@ -61,6 +58,9 @@ paths:
                 example:
                   value:
                     message: www.google.comを削除しました
+        '500':
+          $ref: '#/components/responses/error'
+
       requestBody:
         content:
           application/json:
@@ -82,13 +82,10 @@ paths:
   /scanner/remove:
     post:
       summary: スキャン対象のドメイン一覧の削除
-      operationId: post-keywords
+      operationId: post-scanner-remove
       responses:
         '200':
           $ref: '#/components/responses/result'
-        '500':
-          $ref: '#/components/responses/error'
-        '':
           content:
             application/json:
               schema:
@@ -103,6 +100,9 @@ paths:
                 example:
                   value:
                     message: www.google.comを削除しました
+        '500':
+          $ref: '#/components/responses/error'
+
       requestBody:
         content:
           application/json:
@@ -173,12 +173,12 @@ paths:
                     target_score: 100
         '500':
           $ref: '#/components/responses/error'
-      operationId: get-keywords
+      operationId: get-hunting
       tags:
         - hunting
     post:
       summary: ハンティング設定の更新
-      operationId: post-keywords
+      operationId: post-hunting
       responses:
         '200':
           $ref: '#/components/responses/result'
@@ -337,7 +337,7 @@ paths:
     parameters: []
     post:
       summary: 監視対象ドメインの削除
-      operationId: post-observation-add
+      operationId: post-observation-remove
       responses:
         '200':
           $ref: '#/components/responses/message'
@@ -486,12 +486,12 @@ paths:
                       vt: ''
         '500':
           $ref: '#/components/responses/error'
-      operationId: get-keywords
+      operationId: get-apikeys
       tags:
         - settings
     post:
       summary: 外部サービス設定の更新
-      operationId: post-keywords
+      operationId: post-apikeys
       responses:
         '200':
           $ref: '#/components/responses/result'
@@ -660,27 +660,10 @@ paths:
   /apikey/delete:
     post:
       summary: APIキーの削除
-      operationId: post-apikey-create
+      operationId: post-apikey-delete
       responses:
         '200':
           description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  api_key:
-                    type: string
-                x-examples:
-                  example-1:
-                    api_key: ph_lzcjlzixocswpwkcmfceedocglolwesl
-              examples:
-                example-1:
-                  value:
-                    api_key: pk_xxxxxxxxxxxxxxxxxxxxxxx
-        '500':
-          $ref: '#/components/responses/error'
-        '':
           content:
             application/json:
               schema:
@@ -695,6 +678,9 @@ paths:
                 example:
                   value:
                     message: api key deleted
+        '500':
+          $ref: '#/components/responses/error'
+   
       requestBody:
         content:
           application/json:
