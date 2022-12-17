@@ -4,7 +4,7 @@
 
 ## Python
 ```bash
-$ pip uninstall phishing-hunter
+$ pip install phishing-hunter
 ```
 
 ## Nodejs
