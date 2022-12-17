@@ -14,8 +14,8 @@ $ npm i phishing_hunter_api
 
 ## Golang
 ```bash
-go get github.com/stretchr/testify/assert
-go get golang.org/x/net/context
+$ go get github.com/stretchr/testify/assert
+$ go get golang.org/x/net/context
 ```
 
 Put the package under your project folder and add the following in import:
