@@ -272,8 +272,6 @@ paths:
                         interval: hour
         '500':
           $ref: '#/components/responses/error'
-        '':
-          $ref: '#/components/responses/result'
     parameters: []
   /observation/add:
     parameters: []
@@ -343,8 +341,6 @@ paths:
           $ref: '#/components/responses/message'
         '500':
           $ref: '#/components/responses/error'
-        '':
-          $ref: '#/components/responses/result'
       requestBody:
         content:
           application/json:
